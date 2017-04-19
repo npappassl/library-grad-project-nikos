@@ -2,6 +2,7 @@
 using LibraryGradProject.Models;
 using LibraryGradProject.Repos;
 using Moq;
+using System;
 using Xunit;
 
 namespace LibraryGradProjectTests.Controllers
@@ -68,6 +69,26 @@ namespace LibraryGradProjectTests.Controllers
 
             // Assert
             mockRepo.Verify(mock => mock.Remove(It.Is<int>(x => x == 1)), Times.Once);
+        }
+        [Fact]
+        public void Put_With_Book_Calls_Repo_Get()
+        {
+            // Arrange
+            var mockRepo = new Mock<IRepository<Book>>();
+            mockRepo.Setup(mock => mock.Get(It.IsAny<int>()));
+            BooksController controller = new BooksController(mockRepo.Object);
+
+            // Act
+            try
+            {
+                controller.Put(new Book() { Id = 2, ISBN = "523514613462346", Title = "test" });
+            } catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+
+            // Assert
+            mockRepo.Verify(mock => mock.Get(It.Is<int>(x => x == 2)), Times.Once);
         }
     }
 }

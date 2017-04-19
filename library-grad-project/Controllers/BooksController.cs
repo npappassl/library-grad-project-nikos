@@ -1,6 +1,5 @@
 ﻿using LibraryGradProject.Models;
 using LibraryGradProject.Repos;
-using System;
 using System.Collections.Generic;
 using System.Web.Http;
 
@@ -42,8 +41,18 @@ namespace LibraryGradProject.Controllers
         // PUT api/values/{int}
         public void Put(Book newBook)
         {
-            // TODO
-            throw new NotImplementedException();
+            Book oldBook = _bookRepo.Get(newBook.Id);
+            if(oldBook != null)
+            {
+                oldBook.ISBN = newBook.ISBN;
+                oldBook.Author = newBook.Author;
+                oldBook.Title = newBook.Title;
+                oldBook.PublishDate = newBook.PublishDate;
+
+            } else
+            {
+                throw new System.Exception("not found");
+            }
         }
     }
 }
