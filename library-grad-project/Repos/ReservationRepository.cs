@@ -11,7 +11,7 @@ namespace LibraryGradProject.Repos
 
         public void Add(Reservation entity)
         {
-            if(GetBookId(entity.Id) == null)
+            if(GetBookId(entity.BookId) == null)
             {
                 entity.Id = _reservationCollection.Count;
                 _reservationCollection.Add(entity);
