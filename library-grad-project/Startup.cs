@@ -10,6 +10,12 @@ namespace LibraryGradProject
 {
     public partial class Startup
     {
-        public void Configuration(IAppBuilder app){ }
+        public void Configuration(IAppBuilder app)
+        {
+            //app.Run(async (context) =>
+            //{
+            //    await context.Response.WriteAsync("<div style=\"font-size:4em; text-align:center;\" >hello world</div>");
+            //});
+        }
     }
 }
