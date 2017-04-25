@@ -37,7 +37,8 @@ namespace LibraryGradProject.Controllers
         {
             _reservationRepo.Remove(id);
         }
-
+        // This method needs the newReserv to be a complete object 
+        // any null values will propagate to the database.
         // PUT api/reservations/{int}
         public void Put(Reservation newReserv)
         {

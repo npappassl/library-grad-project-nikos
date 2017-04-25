@@ -2,6 +2,7 @@
 using Autofac.Integration.WebApi;
 using LibraryGradProject.Models;
 using LibraryGradProject.Repos;
+using LibraryGradProject.Controllers;
 using System.Reflection;
 using System.Web.Http;
 using System.Web.Mvc;
@@ -21,8 +22,9 @@ namespace LibraryGradProject
             // Register Web API controllers
             builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
 
+
             // Register types
-            builder.RegisterType<FilledBookRepository>().As<IRepository<Book>>().SingleInstance();
+            builder.RegisterType<BookRepository>().As<IRepository<Book>>().SingleInstance();
             builder.RegisterType<ReservationRepository>().As<IRepository<Reservation>>().SingleInstance();
 
 

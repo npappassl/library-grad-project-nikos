@@ -14,7 +14,14 @@ namespace LibraryGradProject
         {
             //app.Run(async (context) =>
             //{
-            //    await context.Response.WriteAsync("<div style=\"font-size:4em; text-align:center;\" >hello world</div>");
+            //    if(context.Request.Path.ToString().Contains("api/"))
+            //    {
+            //        context.
+            //    }
+            //    else
+            //    {
+            //        await context.Response.WriteAsync("<div style=\"font-size:4em; text-align:center;\" >hello world</div>");
+            //    }
             //});
         }
     }
