@@ -7,15 +7,13 @@ using Xunit;
 
 namespace LibraryGradProjectTests.Repos
 {
-    public class BookRepositoryTests : IDisposable
+    public sealed class BookRepositoryTests : IDisposable
     {
         public void Dispose()
         {
             BookRepository repo = new BookRepository("LibraryConnectionTest");
             repo.Truncate();
-
         }
-
         [Fact]
         public void New_Book_Repository_Is_Empty()
         {

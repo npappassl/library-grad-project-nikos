@@ -8,7 +8,7 @@ using Xunit;
 
 namespace LibraryGradProjectTests.Repos
 {
-    public class ReservationRepositoryTest : IDisposable
+    public sealed class ReservationRepositoryTest : IDisposable
     {
         public void Dispose()
         {
