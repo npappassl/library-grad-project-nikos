@@ -9,17 +9,22 @@ namespace LibraryGradProjectTests.Repos
 {
     public sealed class BookRepositoryTests : IDisposable
     {
+        private IDbContextFactory<LibraryContext> _dbContextFactory;
+        private BookRepository repo;
+        public BookRepositoryTests()
+        {
+            _dbContextFactory = new DbContextMockFactory();
+            repo = new BookRepository(_dbContextFactory);
+        }
         public void Dispose()
         {
-            BookRepository repo = new BookRepository("LibraryConnectionTest");
             repo.Truncate();
         }
         [Fact]
         public void New_Book_Repository_Is_Empty()
         {
             // Arrange
-            BookRepository repo = new BookRepository("LibraryConnectionTest");
-
+            
             // Act
             IEnumerable<Book> books = repo.GetAll();
 
@@ -31,7 +36,6 @@ namespace LibraryGradProjectTests.Repos
         public void Add_Inserts_New_Book()
         {
             // Arrange
-            BookRepository repo = new BookRepository("LibraryConnectionTest");
             Book newBook = new Book() { Title = "Test" };
 
             // Act
@@ -46,7 +50,6 @@ namespace LibraryGradProjectTests.Repos
         public void Add_Sets_New_Id()
         {
             // Arrange
-            BookRepository repo = new BookRepository("LibraryConnectionTest");
             Book newBook = new Book() { Title = "Test" };
 
             // Act
@@ -61,7 +64,6 @@ namespace LibraryGradProjectTests.Repos
         public void Get_Returns_Specific_Book()
         {
             // Arrange
-            BookRepository repo = new BookRepository("LibraryConnectionTest");
             Book newBook1 = new Book() { Id = 0, Title = "Test1" };
             Book newBook2 = new Book() { Id = 1, Title = "Test2" };
             repo.Add(newBook1);
@@ -78,7 +80,6 @@ namespace LibraryGradProjectTests.Repos
         public void Get_All_Returns_All_Books()
         {
             // Arrange
-            BookRepository repo = new BookRepository("LibraryConnectionTest");
             Book newBook1 = new Book() { Title = "Test1" };
             Book newBook2 = new Book() { Title = "Test2" };
             repo.Add(newBook1);
@@ -97,7 +98,6 @@ namespace LibraryGradProjectTests.Repos
         public void Delete_Removes_Correct_Book()
         {
             // Arrange
-            BookRepository repo = new BookRepository("LibraryConnectionTest");
             Book newBook1 = new Book() { Title = "Test1" };
             Book newBook2 = new Book() { Title = "Test2" };
             Book newBook3 = new Book() { Title = "Test3" };

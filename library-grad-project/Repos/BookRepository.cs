@@ -7,21 +7,21 @@ namespace LibraryGradProject.Repos
 {
     public class BookRepository : IRepository<Book>
     {
-        private string connectionStringName;
+        private IDbContextFactory<LibraryContext> _dbContextFactory;
+        public BookRepository(IDbContextFactory<LibraryContext> dbContextFactory)
+        {
+            _dbContextFactory = dbContextFactory;
+        }
         public BookRepository()
         {
-            connectionStringName = "LibraryConnection";
-        }
-        public BookRepository(string connectionStringName)
-        {
-            this.connectionStringName = connectionStringName;
+            _dbContextFactory = new DbContextFactory();
         }
 
         private List<Book> _bookCollection = new List<Book>();
 
         public void Add(Book entity)
         {
-            using (var db = new LibraryContext(connectionStringName))
+            using (var db = _dbContextFactory.Create())
             {
                 db.Books.Add(entity);
                 db.SaveChanges();
@@ -30,7 +30,7 @@ namespace LibraryGradProject.Repos
 
         public IEnumerable<Book> GetAll()
         {
-            using (var db = new LibraryContext(connectionStringName))
+            using (var db = _dbContextFactory.Create())
             {
                 return db.Books.ToArray();
             }
@@ -39,7 +39,7 @@ namespace LibraryGradProject.Repos
 
         public Book Get(int id)
         {
-            using (var db = new LibraryContext(connectionStringName))
+            using (var db = _dbContextFactory.Create())
             {
                 return db.Books.Where(book => book.Id == id).SingleOrDefault();
             }
@@ -49,7 +49,7 @@ namespace LibraryGradProject.Repos
         public void Remove(int id)
         {
             Book bookToRemove;
-            using (var db = new LibraryContext(connectionStringName))
+            using (var db = _dbContextFactory.Create())
             {
                 bookToRemove = db.Books.Where(book => book.Id == id).SingleOrDefault();
                 db.Books.Remove(bookToRemove);
@@ -58,7 +58,7 @@ namespace LibraryGradProject.Repos
         }
         public void Truncate()
         {
-            using (var db = new LibraryContext(connectionStringName))
+            using (var db = _dbContextFactory.Create())
             {
                 db.Database.ExecuteSqlCommand("TRUNCATE TABLE dbo.Books;");
                 db.SaveChanges();

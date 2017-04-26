@@ -7,14 +7,14 @@ namespace LibraryGradProject.Repos
 {
     public class ReservationRepository : IRepository<Reservation>
     {
-        private string connectionStringName;
+        private IDbContextFactory<LibraryContext> _dbContextFactory;
+        public ReservationRepository(IDbContextFactory<LibraryContext> dbContextFactory)
+        {
+            _dbContextFactory = dbContextFactory;
+        }
         public ReservationRepository()
         {
-            connectionStringName = "LibraryConnection";
-        }
-        public ReservationRepository(string connectionStringName)
-        {
-            this.connectionStringName = connectionStringName;
+            _dbContextFactory = new DbContextFactory();
         }
         //private List<Reservation> _reservationCollection = new List<Reservation>();
         //private ReservationContext _library = new ReservationContext();
@@ -24,7 +24,7 @@ namespace LibraryGradProject.Repos
 
             if (GetBookId(entity.BookId) == null)
             {
-                using (var db = new LibraryContext(connectionStringName))
+                using (var db = _dbContextFactory.Create())
                 {
 
                     db.Reservations.Add(entity);
@@ -40,7 +40,7 @@ namespace LibraryGradProject.Repos
 
         public Reservation Get(int id)
         {
-            using (var db = new LibraryContext(connectionStringName))
+            using (var db = _dbContextFactory.Create())
             {
                 return db.Reservations.Where(reserv => reserv.Id == id).SingleOrDefault();
             }
@@ -49,7 +49,7 @@ namespace LibraryGradProject.Repos
 
         public IEnumerable<Reservation> GetAll()
         {
-            using (var db = new LibraryContext(connectionStringName))
+            using (var db = _dbContextFactory.Create())
             {
                return  db.Reservations.ToArray<Reservation>();
             }
@@ -61,7 +61,7 @@ namespace LibraryGradProject.Repos
 
             Reservation reservToRemove;
 
-            using (var db = new LibraryContext(connectionStringName))
+            using (var db = _dbContextFactory.Create())
             {
                 reservToRemove = db.Reservations.Where(reserv => reserv.Id == id).SingleOrDefault();
                 if(reservToRemove == null)
@@ -75,7 +75,7 @@ namespace LibraryGradProject.Repos
         }
         public void Truncate()
         {
-            using (var db = new LibraryContext(connectionStringName))
+            using (var db = _dbContextFactory.Create())
             {
                 db.Database.ExecuteSqlCommand("TRUNCATE TABLE dbo.Reservations;");
                 db.SaveChanges();
@@ -83,12 +83,11 @@ namespace LibraryGradProject.Repos
         }
         private Reservation GetBookId(int id)
         {
-            using (var db = new LibraryContext(connectionStringName))
+            using (var db = _dbContextFactory.Create())
             {
                 return db.Reservations.Where(reserv => reserv.BookId == id).SingleOrDefault();
             }
 
-            //return _reservationCollection.Where(reserv => reserv.BookId == id).SingleOrDefault();
         }
     }
 }

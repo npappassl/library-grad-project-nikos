@@ -9,7 +9,6 @@ namespace LibraryGradProject.Repos
     {
 
         public FilledBookRepository()
-            :base("LibraryConnection")
         {
             Add(new Book()
             {

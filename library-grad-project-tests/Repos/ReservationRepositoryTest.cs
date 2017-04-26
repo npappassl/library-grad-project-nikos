@@ -5,21 +5,25 @@ using System.Linq;
 using System;
 using Xunit;
 
-
 namespace LibraryGradProjectTests.Repos
 {
     public sealed class ReservationRepositoryTest : IDisposable
     {
+        private IDbContextFactory<LibraryContext> _dbContextFactory;
+        private ReservationRepository repo;
+        public ReservationRepositoryTest()
+        {
+            _dbContextFactory = new DbContextMockFactory();
+            repo = new ReservationRepository(_dbContextFactory);
+        }
         public void Dispose()
         {
-            ReservationRepository repo = new ReservationRepository("LibraryConnectionTest");
             repo.Truncate();
         }
         [Fact]
         public void New_Reserv_Repository_Is_Empty()
         {
             // Arrange
-            ReservationRepository repo = new ReservationRepository("LibraryConnectionTest");
 
             // Act
             IEnumerable<Reservation> reservs = repo.GetAll();
@@ -32,7 +36,6 @@ namespace LibraryGradProjectTests.Repos
         public void Add_Inserts_New_Reservation()
         {
             // Arrange
-            ReservationRepository repo = new ReservationRepository("LibraryConnectionTest");
             Reservation newReserv = new Reservation() { BookId = 2 };
 
             // Act
@@ -49,7 +52,6 @@ namespace LibraryGradProjectTests.Repos
         public void Get_Returns_Specific_Reservation()
         {
             // Arrange
-            ReservationRepository repo = new ReservationRepository("LibraryConnectionTest");
             Reservation newReservation1 = new Reservation() { BookId = 2 };
             Reservation newReservation2 = new Reservation() { BookId = 3 };
             Reservation newReservation3 = new Reservation() { BookId = 7 };
@@ -68,7 +70,6 @@ namespace LibraryGradProjectTests.Repos
         public void Get_All_Returns_All_Reservations()
         {
             // Arrange
-            ReservationRepository repo = new ReservationRepository("LibraryConnectionTest");
             Reservation newReservation1 = new Reservation() { BookId = 1 };
             Reservation newReservation2 = new Reservation() { BookId = 2 };
             repo.Add(newReservation1);
@@ -87,7 +88,6 @@ namespace LibraryGradProjectTests.Repos
         public void Delete_Removes_Correct_Reservation()
         {
             // Arrange
-            ReservationRepository repo = new ReservationRepository("LibraryConnectionTest");
             Reservation newReservation1 = new Reservation() { BookId = 1 };
             Reservation newReservation2 = new Reservation() { BookId = 2 };
             Reservation newReservation3 = new Reservation() { BookId = 3 };
@@ -107,7 +107,6 @@ namespace LibraryGradProjectTests.Repos
         public void Add_Cannot_Add_Second_Reservation_On_Reserved_BookID()
         {
             // Arange
-            ReservationRepository repo = new ReservationRepository("LibraryConnectionTest");
             Reservation newReservation1 = new Reservation() { BookId = 1 };
             Reservation newReservation2 = new Reservation() { BookId = 1 };
             repo.Add(newReservation1);
