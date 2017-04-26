@@ -2,7 +2,6 @@
 using Autofac.Integration.WebApi;
 using LibraryGradProject.Models;
 using LibraryGradProject.Repos;
-using LibraryGradProject.Controllers;
 using System.Reflection;
 using System.Web.Http;
 using System.Web.Mvc;
@@ -17,7 +16,10 @@ namespace LibraryGradProject
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
 
             // Autofac
-            var builder = new ContainerBuilder();            
+            var builder = new ContainerBuilder();
+
+            //builder.RegisterModelBinders(Assembly.GetExecutingAssembly());
+            //builder.RegisterModelBinderProvider();
 
             // Register Web API controllers
             builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
