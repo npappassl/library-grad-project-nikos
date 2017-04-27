@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.WebPages.Razor;
 
 namespace LibraryGradProject.Controllers
 {
@@ -12,7 +13,7 @@ namespace LibraryGradProject.Controllers
         public ActionResult Index()
         {
             ViewBag.Title = "Library";
-            return View();
+            return View(ViewBag);
         }
         public ActionResult Reservations()
         {
